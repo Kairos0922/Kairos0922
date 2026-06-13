@@ -1,6 +1,4 @@
-## Kairos
-
-AI Learner · AI Practitioner · Full-Stack Developer
+<img src="assets/header.svg" width="100%"/>
 
 ## Tech Stack
 
