@@ -155,10 +155,57 @@
   white-space: nowrap;
 }
 
+/* model & assumptions: keyboard-reachable <details>, both themes via tokens */
+.rx-notes {
+  color: var(--anatomy-muted);
+  font-size: 13px;
+}
+.rx-notes summary {
+  cursor: pointer;
+  width: fit-content;
+  color: var(--anatomy-text);
+  font-family: var(--anatomy-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.rx-notes summary:hover { color: var(--anatomy-strong); }
+.rx-notes summary:focus-visible {
+  outline: 1px solid var(--anatomy-muted);
+  outline-offset: 3px;
+}
+.rx-notes-body {
+  display: grid;
+  gap: 8px;
+  max-width: 74ch;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--anatomy-shade-0);
+}
+.rx-notes-body p { margin: 0; }
+.rx-notes-body dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 8px 18px;
+  margin: 0;
+}
+.rx-notes-body dt {
+  padding-top: 1px;
+  color: var(--anatomy-text);
+  font-family: var(--anatomy-mono);
+  font-size: 11px;
+}
+.rx-notes-body dd { margin: 0; }
+
 @media (max-width: 640px) {
   .rx .iso-plate {
     padding: 48px 8px 84px;
   }
+  .rx-notes-body dl {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .rx-notes-body dt { margin-top: 6px; }
   .rx-slider {
     left: 14px;
     right: 14px;

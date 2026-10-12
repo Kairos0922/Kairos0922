@@ -155,7 +155,6 @@ if (layer) stage.setAttribute("data-gl", "");
 const rodsEl = document.getElementById("rx-rods");
 const cursorEl = stage.querySelector('[data-live="cursor-item"]');
 const scramEl = stage.querySelector('[data-live="scram"]');
-const waterEl = stage.querySelector('[data-live="watercol"]');
 const needleEls = {
   power: stage.querySelector('[data-live="needle-power"]'),
   temp: stage.querySelector('[data-live="needle-temp"]'),
@@ -165,12 +164,6 @@ const barEls = {
   decay: stage.querySelector('[data-bar="decay"]'),
 };
 const BAR_Z = [14, 34];
-const GLASS_C = [150 + 33.5 * Math.SQRT1_2, 25 + 33.5 * Math.SQRT1_2];
-const glassAt = (level) => {
-  const dx = 1.5;
-  const pts = [[GLASS_C[0] - dx, GLASS_C[1], 103], [GLASS_C[0] + dx, GLASS_C[1], 103], [GLASS_C[0] + dx, GLASS_C[1], level], [GLASS_C[0] - dx, GLASS_C[1], level]].map((p) => iso(p, PROJ));
-  return pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("") + "Z";
-};
 const needleAt = (key, value) => {
   const n = NEEDLES[key];
   const share = clamp((value - n.lo) / (n.hi - n.lo), 0, 1);
@@ -201,6 +194,12 @@ const rodE = { x: 0, v: 0 };
 const first = { x: 0, v: 0 };
 
 function say(text) { if (readout.textContent !== text) readout.textContent = text; }
+// live hover for the core: separates fission power, decay heat and the heat glow.
+// No fuel temperature is claimed — the glow is a relative heat-intensity cue.
+function coreSay(t) {
+  if (t <= 0) return "fuel assemblies · at power: fission 93.4 % + decay 6.6 % of full power · glow = remaining heat";
+  return `fuel assemblies · fission ${(fissionFrac(t) * 100).toFixed(2)} % (chain reaction suppressed) · decay heat ${(decayFrac(t) * 100).toFixed(1)} % · glow tracks the remaining heat`;
+}
 function reset() {
   playing = false;
   t = 0;
@@ -240,14 +239,13 @@ function draw() {
   barEls.fission.setAttribute("y", (-BAR_Z[0] - fh).toFixed(2));
   barEls.decay.setAttribute("height", dh.toFixed(2));
   barEls.decay.setAttribute("y", (-BAR_Z[0] - dh).toFixed(2));
-  const level = D.level0 + (D.level1 - D.level0) * smooth(0, 40, t);
-  waterEl.setAttribute("d", glassAt(level));
   const press = scramAt >= 0 ? burst(clock - scramAt, 0.06, 0.22) : 0;
   scramEl.setAttribute("transform", translateAlong(PROJ, [0, 0, -2.2 * press]));
   stage.style.setProperty("--rx-heat", heat.x.toFixed(3));
   if (!selected) say(readoutOf(t));
+  else if (selected === "core") say(coreSay(t));
   stage.setAttribute("aria-valuenow", String(Math.round(t)));
-  const vt = phaseOf(t) === "ready" ? "ready, rods up, at power" : `${phaseOf(t)}, t ${t.toFixed(0)} seconds, decay heat ${(decayFrac(t) * 100).toFixed(1)} percent`;
+  const vt = phaseOf(t) === "ready" ? "ready, rods up, at power, core outlet 325 degrees" : `${phaseOf(t)}, t ${t.toFixed(0)} seconds, decay heat ${(decayFrac(t) * 100).toFixed(1)} percent, core outlet ${outletC(t).toFixed(0)} degrees celsius`;
   if (vt !== lastVT) { lastVT = vt; stage.setAttribute("aria-valuetext", vt); }
   if (layer) {
     const active = heat.x > 0.004 || first.x < 0.999;

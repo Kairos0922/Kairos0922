@@ -1,12 +1,12 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import * as k from "../../../.agents/skills/anatomy/kit/iso-kit.mjs";
-import * as G from "../../../.agents/skills/anatomy/kit/lathe.mjs";
-import { tubePieces, tubeSvg, crossingsOf } from "../../../.agents/skills/anatomy/kit/tube.mjs";
-import * as A from "../../../.agents/skills/anatomy/kit/audit.mjs";
-import { glCamera } from "../../../.agents/skills/anatomy/kit/gl.mjs";
-import { glScript, kitScript } from "../../../.agents/skills/anatomy/scripts/inline-kit.mjs";
+import * as k from "../../../../../.agents/skills/anatomy/kit/iso-kit.mjs";
+import * as G from "../../../../../.agents/skills/anatomy/kit/lathe.mjs";
+import { tubePieces, tubeSvg, crossingsOf } from "../../../../../.agents/skills/anatomy/kit/tube.mjs";
+import * as A from "../../../../../.agents/skills/anatomy/kit/audit.mjs";
+import { glCamera } from "../../../../../.agents/skills/anatomy/kit/gl.mjs";
+import { glScript, kitScript } from "../../../../../.agents/skills/anatomy/scripts/inline-kit.mjs";
 import * as M from "./model.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -522,7 +522,7 @@ for (const [deg, who] of [[210, "hot"], [160, "suction"]]) {
   const waterPts = [[glassC[0] - 1.5, glassC[1], 103], [glassC[0] + 1.5, glassC[1], 103], [glassC[0] + 1.5, glassC[1], 164], [glassC[0] - 1.5, glassC[1], 164]].map((p) => at(p));
   const waterD = waterPts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join("") + "Z";
   const waterShape = record(A.tube([[glassC[0], glassC[1], 103], [glassC[0], glassC[1], 164]], 1.4, { name: "sg.watercol", limp: true }));
-  put("sg", [glassC[0], glassC[1], 133], `<path class="rx-water" data-live="watercol" d="${waterD}"/>`, {
+  put("sg", [glassC[0], glassC[1], 133], `<path class="rx-water" d="${waterD}"/>`, {
     name: nameFor("sg.watercol"),
     shapes: [waterShape],
   });
@@ -706,15 +706,15 @@ const frontSvg = `<svg xmlns="http://www.w3.org/2000/svg" class="iso-svg rx-fron
 const ZSV = (vec) => { const o = at([0, 0, 0]); const p = at(vec); return [p[0] - o[0], p[1] - o[1]]; };
 const PARTS = [
   ["rpv", "Reactor pressure vessel", "steel vessel at 155 bar; the window is cut away"],
-  ["core", "Fuel assemblies", "fission made 100 % of the heat; the fission products keep decaying after SCRAM"],
-  ["rods", "Control rods", "drop into the core in 2.4 s; fission stops, decay heat does not"],
-  ["hotleg", "Hot leg", "carries the coolant to the steam generator at core outlet temperature"],
+  ["core", "Fuel assemblies", "at power fission makes ~93 % of the heat and decay ~7 %; after SCRAM the chain reaction is suppressed and the fission products keep decaying"],
+  ["rods", "Control rods", "free-fall into the core in 2.4 s; they suppress the chain reaction — decay heat is not fission and keeps going"],
+  ["hotleg", "Hot leg", "carries the coolant at the core-outlet temperature (teaching curve: 325 °C at power, ≈292 °C at hot standby — not a plant prediction)"],
   ["crossover", "Crossover leg", "steam generator outlet to the pump"],
   ["coldleg", "Cold leg", "returns to the vessel at about 292 C"],
   ["pump", "Reactor coolant pump", "keeps running at full flow; it must, or the core uncovers"],
-  ["sg", "Steam generator", "boils secondary water; carries the decay heat away as steam"],
+  ["sg", "Steam generator", "boils secondary water; carries the decay heat away as steam; the sight-glass level is a fixed schematic — feedwater holds it"],
   ["steam", "Main steam line", "after a SCRAM it still carries a few percent of full-power steam"],
-  ["pzr", "Pressurizer", "holds the primary at 155 bar with heaters and spray"],
+  ["pzr", "Pressurizer", "holds the primary at about 155 bar — a fixed nominal schematic value; no pressurizer dynamics are modelled"],
   ["panel", "Instrument panel", "power and core outlet temperature, live from the model"],
   ["detector", "Source-range detector", "counts neutrons; sees the power fall by decades"],
 ];
@@ -730,10 +730,14 @@ const DATA = {
   asmZ: ASM_Z, asmHalf: ASM_HALF,
   asm: ASM.map(({ at: c }) => [c[0], c[1]]),
   rodStroke: ROD_STROKE,
-  level0: 164, level1: 158,
   pieces: Object.fromEntries(PARTS.map(([id, name, say]) => [id, { name, say }])),
   order: PARTS.map(([id]) => id),
-  model: { P0: M.P0_MW, tin: M.TIN_C, dtFull: M.DT_FULL_C, rodTravel: M.ROD_TRAVEL_S, window: M.WINDOW_S, pBar: M.P_BAR },
+  model: {
+    P0: M.P0_MW, tinFull: M.TIN_C, dtFull: M.DT_FULL_C,
+    tavg0: M.TAVG0_C, tavgStandby: M.TAVG_STANDBY_C,
+    tauLoop: M.TAU_LOOP_S, tauOutlet: M.TAU_OUTLET_S,
+    rodTravel: M.ROD_TRAVEL_S, window: M.WINDOW_S, pBar: M.P_BAR,
+  },
 };
 const MODEL_SRC = readFileSync(join(HERE, "model.mjs"), "utf8").replace(/^export /gm, "");
 const LIVE = readFileSync(join(HERE, "live.js"), "utf8").replace("__DATA__", JSON.stringify(DATA)).replace("__MODEL__", MODEL_SRC);
@@ -742,16 +746,17 @@ const CSS = readFileSync(join(HERE, "style.css"), "utf8");
 const slider = `<label class="rx-slider"><span class="rx-slider-label">time after scram</span><input type="range" min="0" max="60" step="0.1" value="0" data-slider aria-label="Time after scram, in seconds"/></label>`;
 const corners = `<div class="iso-plate-corners" aria-hidden="true"><span class="iso-plate-corner" data-corner="fig">Fig 1</span><span class="iso-plate-corner" data-corner="title">The reactor that won't turn cold</span><span class="iso-plate-corner" data-corner="readout" data-readout>ready</span></div>`;
 const stage = `<div class="rx-stage" tabindex="0" role="slider" aria-label="Pressurised-water reactor cutaway. Space or the SCRAM button starts the scram; arrow keys scrub time; hover parts for what they do." aria-valuemin="0" aria-valuemax="60" aria-valuenow="0" aria-valuetext="ready">${backSvg}<canvas class="rx-gl" aria-hidden="true"></canvas>${frontSvg}</div>`;
-const caption = `A pressurised-water reactor at 3,400 MW thermal. SCRAM drops the rods and fission stops within seconds - but the fission products already made keep decaying: about 6.6 % of full power at once, still 2.9 % a minute later, roughly 100 MW. The pumps keep circulating and the steam generator keeps boiling, which is why the reactor "won't turn cold". Teaching model: decay heat follows the Way-Wigner rule (0.066 t^-0.2), rod travel 2.4 s, outlet temperature through a 4 s lag at constant flow. Illustration, not an accident-analysis tool.`;
+const caption = `A pressurised-water reactor at 3,400 MW thermal (representative teaching setting). SCRAM drops the rods and the self-sustaining chain reaction is suppressed within seconds — a small residual fission term keeps a fraction of a percent alive. What cannot be switched off is decay heat from the fission products already made: about 6.6 % of full power at once, still 2.9 % (≈99 MW) a minute later, on top of a few tenths of a percent of residual fission. The pumps keep circulating and the plant parks at hot standby — roughly 292 °C on a stylised teaching curve — for hours: the heat power collapses, the temperature does not. Teaching illustration with labelled approximations — not an accident-analysis or operations tool. Details under “Model & assumptions” below.`;
+const notes = `<details class="rx-notes"><summary>Model &amp; assumptions</summary><div class="rx-notes-body"><p><strong>Scope.</strong> This figure is a teaching illustration of why decay heat matters. It is not a plant simulator, not an accident-analysis program, and not an operator aid: do not use it for real-plant accident prediction, operational decisions or safety analysis. Real plants are analysed with licensed codes (RELAP5, TRACE) on plant-specific data.</p><p>Every moving number is a pure function of one variable: t, the seconds since the operator pressed SCRAM (t = 0 is full power). P₀ = 3,400 MW thermal is a representative large four-loop PWR — a teaching setting, not a specific unit. Powers are shares of P₀ or MW; temperatures in °C; pressure in bar absolute.</p><dl><dt>Decay heat — Way–Wigner teaching rule</dt><dd>P/P₀ = 0.066 · t<sup>−0.2</sup>, t in seconds, held at 6.6 % below 1 s (the truncation avoids the power law's divergence as t → 0). Assumes the core ran at full power long before the scram — an irradiation history far longer than this 60 s window. Reference values: ≈6.6 % of full power at 1 s; ≈2.9 % (≈99 MW) at 60 s. This power law is the classic teaching approximation — it is <em>not</em> an implementation of the ANSI/ANS-5.1 standard, which sums many nuclide groups and reads slightly higher at short times. Source (bibliography checked online): K. Way &amp; E. P. Wigner, “The Rate of Decay of Fission Products”, Phys. Rev. 73, 1318–1330 (1948), <a href="https://doi.org/10.1103/PhysRev.73.1318">doi:10.1103/PhysRev.73.1318</a>.</dd><dt>Residual fission term</dt><dd>Rods free-fall for 2.4 s (real PWR scram rods: roughly 2–4 s). While they fall, prompt power is drawn down as (1 − rod travel)⁴ — a spatial-worth shape, not point kinetics. After insertion, fission does not drop to zero: a residual term ≈0.006 · (1+t)<sup>−0.2</sup> of P₀ remains. Its coefficient is a teaching stand-in of the same order as a U-235 core's effective delayed-neutron fraction (~0.65 %) — not a validated kinetics model — and the t<sup>−0.2</sup> shape stands in for the six delayed-neutron groups (longest-lived half-life ≈55 s). Total heat power = residual fission + decay heat; the readout shows both separately.</dd><dt>Loop average temperature — stylised</dt><dd>T<sub>avg</sub>(t) = 291.5 + 17 · e<sup>−t/25</sup> °C. A stylised teaching response: the full-power average (308.5 °C) relaxing toward a representative hot-standby average (291.5 °C). The 291.5 °C figure, the 17 °C span and the 25 s time constant are teaching choices — not universal real-PWR parameters — standing in for loop inertia and steam-generator heat transfer; a real plant approaches its no-load temperature over one to a few minutes. Not a prediction of any plant's temperatures.</dd><dt>Core outlet temperature</dt><dd>Targets T<sub>avg</sub> + 16.5 °C × (total heat power)/P₀ through a 4 s transport lag. Assumes constant primary mass flow (pumps at full flow), constant coolant specific heat, and core ΔT proportional to power — teaching proportionality only. Values are computed by fixed-step integration from t = 0, so a reading depends only on the time t, never on how the slider was moved.</dd><dt>Fuel heat state</dt><dd>No fuel temperature is computed or displayed. At power the fuel stores sensible heat of order a few full-power seconds (rough estimate: ≈100 t UO₂ × ~0.3 J/g·K × ~390 K ≈ 13 GJ ≈ 4 s of full power — teaching estimate), which flows out over the first tens of seconds; pellet interiors run far hotter than any average. The orange glow is a relative heat-intensity cue driven by the remaining heat power — it is not a calculated temperature field.</dd><dt>Pressure &amp; sight glass</dt><dd>Pressure is a fixed nominal 155 bar (absolute), schematic: no pressurizer dynamics (shrink/swell, heaters, spray) are modelled. The steam-generator sight-glass level is a fixed schematic: feedwater, boiling and secondary level control are not modelled, and no level change is implied.</dd><dt>Not modelled</dt><dd>Real coolant flow rates and loop transport, the pressurizer, secondary-side steam pressure and feedwater, spatial power and fuel temperature distributions, fission-product nuclide composition, and everything after t = 60 s (decay heat keeps falling for days; spent fuel needs years of cooling).</dd><dt>References</dt><dd>K. Way &amp; E. P. Wigner, “The Rate of Decay of Fission Products”, Phys. Rev. 73, 1318–1330 (1948), <a href="https://doi.org/10.1103/PhysRev.73.1318">doi:10.1103/PhysRev.73.1318</a> (bibliography verified online via Crossref). ANSI/ANS-5.1, “Decay Heat Power in Light Water Reactors”, American Nuclear Society — the standard used in real analyses; this figure does not implement it, and its current edition was not verified here: consult the published standard. Nuclear-regulator material (e.g. the US NRC's reactor-concept resources) covers decay heat in operational terms.</dd></dl></div></details>`;
 const keys = [
   { mark: "lit", label: "control rods and needles, driven by the model" },
-  { mark: "red", label: "decay heat glowing in the core (orange)" },
+  { mark: "red", label: "core heat — relative glow intensity: fission at power, decay heat after SCRAM (orange)" },
   { mark: "blue", label: "primary coolant (blue)" },
 ];
-const body = `<figure class="iso-figure rx"><div class="iso-plate">${corners}${stage}${slider}</div><figcaption class="iso-legend"><span class="iso-keys">${keys.map((key) => `<span class="iso-key"><i data-mark="${key.mark}"></i>${key.label}</span>`).join("")}</span><span class="iso-caption">${caption}</span></figcaption></figure>`;
+const body = `<figure class="iso-figure rx"><div class="iso-plate">${corners}${stage}${slider}</div><figcaption class="iso-legend"><span class="iso-keys">${keys.map((key) => `<span class="iso-key"><i data-mark="${key.mark}"></i>${key.label}</span>`).join("")}</span><span class="iso-caption">${caption}</span>${notes}</figcaption></figure>`;
 const page = k.pageHtml({ title: "The reactor that won't turn cold", theme: THEME, body: `<style>${CSS}</style>${body}`, script: kitScript() + glScript() + LIVE, width: 1040 });
 const name = THEME === "light" ? "reactor-scram-light.html" : "reactor-scram.html";
-writeFileSync(join(HERE, name), page);
+writeFileSync(join(HERE, "..", name), page);
 console.log("wrote", name, `${(page.length / 1024).toFixed(0)} KB`, `${items.length} items`);
 
 // the guide tubes' tops end inside the head's silhouette (verified at 3x: shots/guide-head.png)

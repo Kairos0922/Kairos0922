@@ -22,13 +22,15 @@ no build step, no external requests.
        width="100%"/>
 </a>
 
-SCRAM drops fission in 2.4 s — but the fission products already made keep
-decaying: ~6.6 % of full power at once, still ~100 MW a minute later. Scrub the
-first 60 seconds, hover any part, and see why the plant won't turn cold.
+SCRAM suppresses the self-sustaining chain reaction within seconds — but the
+fission products already made keep decaying: ~6.6 % of full power at once,
+still ~99 MW a minute later, on top of a few tenths of a percent of residual
+fission. Scrub the first 60 seconds, hover any part, and see why the plant
+won't turn cold.
 
 **[Open the live figure →](https://kairos0922.github.io/Kairos0922/reactor-scram.html)**
 · [light theme](https://kairos0922.github.io/Kairos0922/reactor-scram-light.html)
-· [how it's built & verified](./docs/src/README.md)
+· [model & assumptions, how it's verified](./docs/src/README.md)
 
 ## Contact
 
