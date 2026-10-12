@@ -1,0 +1,177 @@
+.rx {
+  --rx-ember: #ff7a2a;
+  --rx-ember-deep: #c2571f;
+  --rx-water-tint: #3d6b8c;
+  --rx-cut: #161616;
+  --rx-blend: screen;
+  --rx-hot-ink: #b0562a;
+}
+
+[data-theme="light"] .rx {
+  --rx-ember: #c2410c;
+  --rx-ember-deep: #9a3412;
+  --rx-water-tint: #7fa8c2;
+  --rx-cut: #b8b5ae;
+  --rx-blend: normal;
+  --rx-hot-ink: #c2410c;
+}
+
+/* the cutaway cavity: darker, warmer steel (a physical ground for the glow) */
+.rx-cavity {
+  --anatomy-paper: #1d1a17;
+  --anatomy-face: #232019;
+  --anatomy-top: #24211a;
+  --anatomy-shade-0: #171512;
+  --anatomy-shade-1: #1a1815;
+  --anatomy-shade-2: #1d1b17;
+  --anatomy-shade-3: #201e19;
+}
+[data-theme="light"] .rx-cavity {
+  --anatomy-paper: #b3aca0;
+  --anatomy-face: #beb7ab;
+  --anatomy-top: #c4bdb1;
+  --anatomy-shade-0: #8f897d;
+  --anatomy-shade-1: #9c968a;
+  --anatomy-shade-2: #a8a294;
+  --anatomy-shade-3: #b5afa3;
+}
+
+/* fuel assemblies take the ember tint, driven live by --rx-heat */
+.rx-asm .iso-top {
+  fill: color-mix(in oklab, var(--anatomy-top), var(--rx-ember) calc(var(--rx-heat, 1) * 42%));
+}
+.rx-asm .iso-shade[data-shade="2"],
+.rx-asm .iso-shade[data-shade="3"] {
+  fill: color-mix(in oklab, var(--anatomy-shade-2), var(--rx-ember) calc(var(--rx-heat, 1) * 30%));
+}
+
+/* water: a quiet blue tint on the cavity backdrop and the sight glass */
+.rx-water {
+  fill: var(--rx-water-tint);
+  opacity: 0.30;
+  pointer-events: none;
+}
+[data-theme="light"] .rx-water {
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+}
+
+.rx-cutface {
+  fill: var(--rx-cut);
+}
+
+/* the hot leg warms with the coolant temperature */
+.rx [data-piece="loop"] .tb-body { fill: var(--anatomy-shade-2); }
+
+.rx-stage {
+  position: relative;
+  border-radius: 10px;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.rx-stage:focus-visible {
+  outline: 1px solid var(--anatomy-muted);
+  outline-offset: 6px;
+}
+.rx-stage > svg,
+.rx-stage > canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.rx-front,
+.rx-gl {
+  position: absolute;
+  inset: 0;
+  height: 100% !important;
+}
+.rx-gl {
+  pointer-events: none;
+  mix-blend-mode: var(--rx-blend);
+}
+.rx-front {
+  pointer-events: none;
+  overflow: visible;
+}
+.rx-front .it {
+  pointer-events: visiblePainted;
+}
+
+/* selection */
+.rx-stage[data-focus] .it:not([data-on]):not([data-piece="stand"]) {
+  --anatomy-hi: var(--anatomy-mid);
+  --anatomy-mid: var(--anatomy-lo);
+}
+.it[data-on] {
+  --anatomy-hi: var(--anatomy-lit);
+  --anatomy-mid: var(--anatomy-hi);
+}
+.it[data-on] .iso-top,
+.it[data-on] .tb-shine {
+  fill: var(--anatomy-lit-top);
+}
+.it[data-on] .iso-shade,
+.it[data-on] .tb-body {
+  fill: var(--anatomy-lit-shade);
+}
+
+/* bar meters */
+.rx-slot {
+  fill: none;
+  stroke: var(--anatomy-mid);
+  stroke-width: 0.6;
+}
+.rx-barfill {
+  fill: var(--rx-ember);
+  opacity: 0.85;
+}
+.rx [data-bar="fission"] {
+  fill: var(--anatomy-lit);
+}
+
+/* time slider */
+.rx-slider {
+  position: absolute;
+  left: 20px;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--anatomy-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--anatomy-muted);
+}
+.rx-slider input[type="range"] {
+  width: 190px;
+  height: 22px;
+  accent-color: var(--anatomy-lit);
+  cursor: ew-resize;
+}
+.rx-slider-label {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .rx .iso-plate {
+    padding: 48px 8px 84px;
+  }
+  .rx-slider {
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+  }
+  .rx-slider input[type="range"] {
+    width: 100%;
+    flex: 1;
+  }
+  .rx .iso-plate-corner[data-corner="readout"] {
+    bottom: 44px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
