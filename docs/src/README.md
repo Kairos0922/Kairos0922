@@ -5,8 +5,10 @@ first 60 seconds after SCRAM. The point the figure makes: **SCRAM quickly
 suppresses the self-sustaining chain reaction, but the fission products already
 made keep decaying** — about 6.6 % of full power at once, still 2.9 % (≈99 MW)
 a minute later, on top of a few tenths of a percent of residual fission. The
-pumps keep circulating and the plant parks at hot standby (a stylised ≈292 °C
-curve) for hours, which is why it "won't turn cold".
+pumps keep circulating and, on a stylised teaching curve, the loop stays near
+≈292 °C through the window — the reactor won't turn cold: the decay heat must
+keep being removed long after these 60 seconds. The figure shows the trend
+inside its 60 s window only; it does not predict the plant's state beyond it.
 
 **Teaching illustration — not a plant simulator, not an accident-analysis
 program, not an operator aid.** The accessible “Model & assumptions” panel on
@@ -36,26 +38,30 @@ the page carries the full statement, formula, units, references and scope.
 |---|---|
 | Decay heat | Way–Wigner teaching rule: P/P0 = 0.066 · t^−0.2 (held at 6.6 % below 1 s); ≈6.6 % at 1 s, ≈2.9 % (≈99 MW) at 60 s |
 | Rod travel | 2.4 s free fall, distance ∝ t² |
-| Residual fission | 0.934 · (1 − rod)⁴ while the rods fall, plus ≈0.006 · (1+t)^−0.2 after insertion — a teaching stand-in of the same order as β_eff (~0.65 %), not a validated kinetics model |
-| Loop average | stylised: Tavg = 291.5 + 17 · e^−t/25 °C — teaching curve, not a plant prediction |
+| Residual fission | 0.934 · (1 − rod)⁴ while the rods fall, plus ≈0.006 · (1+t)^−0.2 after insertion — a phenomenological teaching placeholder, not computed from delayed-neutron kinetics (precursor concentrations, group decay constants and reactivity are not modelled) |
+| Loop average | stylised: Tavg = 291.5 + 17 · e^−t/25 °C — teaching curve showing a trend inside the 60 s window; not a plant prediction, and not a simulation of the transition to hot standby |
 | Core outlet | targets Tavg + 16.5 °C × P_total/P0 through a 4 s transport lag; assumes constant mass flow, constant cp, ΔT ∝ power; integrated from t = 0, so readings depend only on t (path-independent) |
-| Fuel heat state | no temperature computed; the glow is a relative heat-intensity cue driven by the remaining heat power; stored sensible heat ≈ a few full-power seconds (rough teaching estimate) |
+| Fuel heat state | no temperature computed; the glow is a relative heat-intensity cue driven by the remaining heat power; rough sensible-heat estimate ≈100 t UO₂ × ~0.3 J/(g·K) × ~390 K ≈ 12 GJ ≈ 3.4 s of rated power (assumed mass/cp/ΔT; not a validated fuel-temperature model, and not a claim that all of it leaves within 60 s) |
 | Sight glass | fixed schematic level — feedwater, boiling and level control are not modelled |
 | Pressure | fixed nominal 155 bar (absolute), schematic — no pressurizer model |
 | P0 | 3,400 MW thermal, a representative large four-loop PWR — teaching setting |
 
 Sources / honesty: the decay-heat curve is the classic Way–Wigner teaching
-power law, **not** an implementation of the ANSI/ANS-5.1 standard (which sums
-many nuclide groups and reads slightly higher at short times). Verified
+power law, **not** an implementation of the ANSI/ANS-5.1-2014 (R2023) standard
+(which sums many nuclide groups and reads slightly higher at short times);
+citing the standard here implies no conformance or validation. Verified
 bibliography (checked online via Crossref): K. Way & E. P. Wigner, “The Rate
 of Decay of Fission Products”, Phys. Rev. 73, 1318–1330 (1948),
-doi:10.1103/PhysRev.73.1318. ANSI/ANS-5.1, “Decay Heat Power in Light Water
-Reactors” (American Nuclear Society) is cited by title and publisher only —
-its current edition was not verified here. The 291.5 °C / 17 °C / 25 s loop
-figures, the 2.4 s rod fall, the 0.006 residual-fission coefficient, the 4 s
-transport lag and the 155 bar nominal are stated teaching simplifications,
-disclosed in the page's assumptions panel as well. **This figure is an
-illustration of why decay heat matters; it does not predict any real plant.**
+doi:10.1103/PhysRev.73.1318. ANSI/ANS-5.1-2014 (R2023), “Decay Heat Power in
+Light Water Reactors” (American Nuclear Society): version and title per the
+official ANSI webstore catalogue; the standard's full text was not purchased
+or read here. The residual-fission term is a phenomenological teaching
+placeholder, not derived from delayed-neutron kinetics. The 291.5 °C / 17 °C /
+25 s loop figures, the 2.4 s rod fall, the 0.006 residual-fission coefficient,
+the 4 s transport lag and the 155 bar nominal are stated teaching
+simplifications, disclosed in the page's assumptions panel as well. **This
+figure is an illustration of why decay heat matters; it does not predict any
+real plant or its state beyond the 60 s window.**
 
 ## What is drawn
 

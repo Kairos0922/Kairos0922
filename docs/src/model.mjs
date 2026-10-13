@@ -5,7 +5,8 @@
 // accident-analysis code. Numbers marked "teaching" are representative and
 // order-correct; they are neither measured plant data nor universal parameters.
 // Real analysis uses licensed codes (RELAP5, TRACE) on plant-specific data and
-// the ANSI/ANS-5.1 decay-heat standard. This module implements none of those.
+// the ANSI/ANS-5.1-2014 (R2023) decay-heat standard (version per the official
+// ANSI webstore catalogue). This module implements none of those.
 //
 // - P0_MW = 3400 MWt: a representative large four-loop PWR. Teaching setting,
 //   not a specific plant.
@@ -22,16 +23,18 @@
 // - Fission power: rods free-fall for ~2.4 s (real PWR scram rods: roughly
 //   2–4 s). While they fall, prompt power is drawn down with the fourth power
 //   of the remaining travel — a spatial-worth shape, not point kinetics. After
-//   insertion a residual fission term ≈ 0.006 · (1+t)^-0.2 remains: its
-//   coefficient is a TEACHING STAND-IN of the same order as a U-235 core's
-//   effective delayed-neutron fraction (~0.65 %), not a validated kinetic
-//   model, and the t^-0.2 shape stands in for the six delayed-neutron groups
-//   (longest-lived half-life ≈ 55 s). The self-sustaining chain reaction is
-//   suppressed within seconds — the heat output does NOT drop to zero at once.
+//   insertion a residual fission term ≈ 0.006 · (1+t)^-0.2 remains: a purely
+//   PHENOMENOLOGICAL teaching placeholder, chosen so that a fraction of a
+//   percent of fission survives the rods. It is NOT computed from delayed-
+//   neutron kinetics: real kinetics tracks precursor concentrations, the decay
+//   constants of the delayed-neutron groups and reactivity changes (the
+//   point-kinetics equations), none of which this figure implements. The
+//   self-sustaining chain reaction is suppressed within seconds — the heat
+//   output does NOT drop to zero at once.
 // - Loop average temperature: Tavg(t) = 291.5 + 17 · exp(−t/25) °C. A STYLISED
 //   teaching response: the full-power average (292 + 33/2 = 308.5 °C) relaxing
-//   toward a representative hot-standby average (291.5 °C — a teaching figure,
-//   not a universal plant parameter), with a 25 s time constant standing in
+//   toward a representative ≈291.5 °C figure (a teaching choice, not a
+//   universal plant parameter), with a 25 s time constant standing in
 //   for loop inertia and steam-generator heat transfer. Real plants approach
 //   their no-load temperature over one to a few minutes. Not a prediction of
 //   any plant's temperatures.
@@ -42,12 +45,16 @@
 //   Integrated from t = 0 with a fixed step and cached at 0.05 s granularity,
 //   so the value at a given t is path-independent: scrubbing the slider back
 //   and forth, playing, or pausing all yield the same reading.
-// - Fuel heat state: NOT computed as a temperature. At power the fuel stores
-//   sensible heat of order a few full-power seconds (≈ 100 t UO2 × ~0.3 J/g·K
-//   × ~390 K ≈ 13 GJ ≈ 4 × 3.4 GW·s — a rough teaching estimate), which flows
-//   out over the first tens of seconds; pellet interiors run far hotter than
-//   any average. The figure's orange glow is a RELATIVE heat-intensity cue
-//   driven by the remaining heat power, not a computed temperature field.
+// - Fuel heat state: NOT computed as a temperature. A rough sensible-heat
+//   estimate from assumed values: ≈ 100 t UO2 × ~0.3 J/(g·K) × ~390 K
+//   ≈ 12 GJ, about 3.4 s of rated thermal power. That is an order-of-magnitude
+//   figure for how much heat the fuel stores — NOT a validated fuel-temperature
+//   model, and NOT a claim that all of that heat leaves the fuel within the
+//   first tens of seconds: there is no coupled fuel–clad–coolant heat-transfer
+//   model here, so the amount actually removed inside the 60 s window is not
+//   computed. Pellet interiors run far hotter than any average. The figure's
+//   orange glow is a RELATIVE heat-intensity cue driven by the remaining heat
+//   power, not a computed temperature field.
 // - Pressure: fixed nominal 155 bar (absolute), schematic. No pressurizer
 //   model: no shrink/swell, heater or spray dynamics are claimed.
 // - Sight-glass level: fixed schematic. Feedwater, boiling and secondary
@@ -58,7 +65,7 @@ export const TIN_C = 292; // full-power core inlet / cold leg (teaching figure)
 export const DT_FULL_C = 33; // full-power rise across the core at full flow
 export const DT_HALF_C = DT_FULL_C / 2; // 16.5 °C, average-to-outlet half-rise
 export const TAVG0_C = TIN_C + DT_HALF_C; // 308.5 °C, full-power loop average
-export const TAVG_STANDBY_C = 291.5; // representative hot-standby average (teaching figure)
+export const TAVG_STANDBY_C = 291.5; // representative teaching figure, not a plant parameter
 export const TAU_LOOP_S = 25; // stylised teaching time constant
 export const TAU_OUTLET_S = 4; // transport lag through core + hot leg (teaching)
 export const ROD_TRAVEL_S = 2.4;
