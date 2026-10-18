@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="#selected-work">Selected work</a> &nbsp; / &nbsp;
-  <a href="#a-live-experiment">Live experiment</a> &nbsp; / &nbsp;
+  <a href="#a-learning-method">Learning method</a> &nbsp; / &nbsp;
   <a href="#toolbox">Toolbox</a> &nbsp; / &nbsp;
   <a href="mailto:kenpete@163.com">Say hello</a>
 </p>
@@ -35,19 +35,23 @@ An evidence-minded pipeline for animated science explainers: research, scripting
 
 <sub>JavaScript &nbsp; / &nbsp; Browser rendering &nbsp; / &nbsp; Fact checking &nbsp; / &nbsp; Human checkpoints</sub>
 
-## A live experiment
+## A learning method
 
-### 03 / The reactor that won’t turn cold
+### 03 / The learning loop
 
-Shutting down the chain reaction is not the same as removing the heat.
+**As models make answers easier to retrieve, learning is knowing what to ask next.**
 
-<a href="https://kairos0922.github.io/Kairos0922/reactor-scram.html">
-  <img src="assets/reactor-scram.gif" alt="Interactive isometric reactor cutaway showing the first 60 seconds after SCRAM. Click to explore the simulation." width="100%">
+<a href="https://kairos0922.github.io/Kairos0922/learning-loop-light.html">
+  <img src="assets/learning-loop.gif" alt="A six-stage interactive learning workbench. The question marker moves through noticing, framing, modeling, testing, revision and transfer." width="100%">
 </a>
 
-An interactive isometric explainer of post-SCRAM decay heat. Drag through the first 60 seconds and inspect the physics in a browser—no build step, no external requests.
+An interactive method for turning an unfamiliar situation into a useful question: notice, frame, model, test, revise, and transfer. A paper-plane puzzle makes the thinking concrete; the goal is not to memorize its answer, but to practise a process that carries into the next unknown.
 
-**[Explore the live figure →](https://kairos0922.github.io/Kairos0922/reactor-scram.html)** &nbsp; · &nbsp; [Light version](https://kairos0922.github.io/Kairos0922/reactor-scram-light.html) &nbsp; · &nbsp; [Model & verification](https://github.com/Kairos0922/Kairos0922/blob/main/docs/src/README.md)
+> 让天下没有难学的知识：不囤积结论，练习发现、定义、检验、修正，再把方法带到新的问题。
+
+**[Explore the learning loop →](https://kairos0922.github.io/Kairos0922/learning-loop-light.html)** &nbsp; · &nbsp; [Dark version](https://kairos0922.github.io/Kairos0922/learning-loop.html) &nbsp; · &nbsp; [How it was made](https://github.com/Kairos0922/Kairos0922/tree/main/docs/src/learning-loop)
+
+<sub>Learning method and copy by Kairos. Interactive figure crafted with the open-source [Anatomy](https://github.com/wheresryan22/anatomy) skill.</sub>
 
 ## How I build
 
