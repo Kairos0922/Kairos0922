@@ -1,37 +1,71 @@
-<img src="assets/header.png" width="100%"/>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/kairos-lab-dark.jpg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/kairos-lab-light.jpg">
+  <img alt="KAIROS — Independent Systems Lab. Ideas into systems. Build / Learn / Share." src="assets/kairos-lab-light.jpg" width="100%">
+</picture>
 
-## Tech Stack
+<p align="center">
+  <a href="#selected-work">Selected work</a> &nbsp; / &nbsp;
+  <a href="#a-live-experiment">Live experiment</a> &nbsp; / &nbsp;
+  <a href="#toolbox">Toolbox</a> &nbsp; / &nbsp;
+  <a href="mailto:kenpete@163.com">Say hello</a>
+</p>
 
-<img src="https://img.shields.io/badge/Vue-42b883?style=flat&logo=vue.js&logoColor=white&borderRadius=8" height="28"/> <img src="https://img.shields.io/badge/Angular-dd0031?style=flat&logo=angular&logoColor=white&borderRadius=8" height="28"/> <img src="https://img.shields.io/badge/TypeScript-3178c6?style=flat&logo=typescript&logoColor=white&borderRadius=8" height="28"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white&borderRadius=8" height="28"/> <img src="https://img.shields.io/badge/Python-3776ab?style=flat&logo=python&logoColor=white&borderRadius=8" height="28"/> <img src="https://img.shields.io/badge/Git-f05032?style=flat&logo=git&logoColor=white&borderRadius=8" height="28"/>
+### Ideas into systems. Systems into understanding.
 
-## Current Focus
+I’m **Kairos**, an independent builder exploring AI agents and intelligent systems. I build tools that make agents useful beyond the chat window, and visual experiments that make complex ideas easier to understand.
 
-**AI Agent** — Exploring autonomous agent architectures and intelligent systems
+> 在合适的时刻，把复杂系统做成可理解、可参与的工具。
 
-## Interactive Figures
+## Selected work
 
-Hand-built, interactive isometric teaching figures — every solid drawn and
-audited, physics modeled from cited correlations. Runs entirely in the browser:
-no build step, no external requests.
+### 01 / Agents, within reach
 
-### Fig 1 — The Reactor That Won't Turn Cold
+**[dsh-wechat-bridge](https://github.com/Kairos0922/dsh-wechat-bridge)**
+
+Turn WeChat into a mobile control surface for DeepSeek Harness through Tencent’s official iLink. This TypeScript bridge routes across modes, keeps people in approval loops, manages rate-aware queues, and exposes web settings for practical remote operation.
+
+<sub>TypeScript &nbsp; / &nbsp; Agent routing &nbsp; / &nbsp; Human approvals &nbsp; / &nbsp; WeChat</sub>
+
+### 02 / Knowledge, made visible
+
+**[knowledge-video-studio](https://github.com/Kairos0922/knowledge-video-studio)**
+
+An evidence-minded pipeline for animated science explainers: research, scripting, voiceover, rendering, and QC move through explicit human-approval points. Built in JavaScript, it uses browser DOM, SVG, and GSAP to turn checked claims into watchable visual narratives.
+
+<sub>JavaScript &nbsp; / &nbsp; Browser rendering &nbsp; / &nbsp; Fact checking &nbsp; / &nbsp; Human checkpoints</sub>
+
+## A live experiment
+
+### 03 / The reactor that won’t turn cold
+
+Shutting down the chain reaction is not the same as removing the heat.
 
 <a href="https://kairos0922.github.io/Kairos0922/reactor-scram.html">
-  <img src="assets/reactor-scram.gif"
-       alt="Interactive isometric cutaway of a PWR during the first 60 seconds after SCRAM"
-       width="100%"/>
+  <img src="assets/reactor-scram.gif" alt="Interactive isometric reactor cutaway showing the first 60 seconds after SCRAM. Click to explore the simulation." width="100%">
 </a>
 
-SCRAM suppresses the self-sustaining chain reaction within seconds — but the
-fission products already made keep decaying: ~6.6 % of full power at once,
-still ~99 MW a minute later, on top of a few tenths of a percent of residual
-fission. Scrub the first 60 seconds, hover any part, and see why the plant
-won't turn cold.
+An interactive isometric explainer of post-SCRAM decay heat. Drag through the first 60 seconds and inspect the physics in a browser—no build step, no external requests.
 
-**[Open the live figure →](https://kairos0922.github.io/Kairos0922/reactor-scram.html)**
-· [light theme](https://kairos0922.github.io/Kairos0922/reactor-scram-light.html)
-· [model & assumptions, how it's verified](./docs/src/README.md)
+**[Explore the live figure →](https://kairos0922.github.io/Kairos0922/reactor-scram.html)** &nbsp; · &nbsp; [Light version](https://kairos0922.github.io/Kairos0922/reactor-scram-light.html) &nbsp; · &nbsp; [Model & verification](https://github.com/Kairos0922/Kairos0922/blob/main/docs/src/README.md)
 
-## Contact
+## How I build
 
-[kenpete@163.com](mailto:kenpete@163.com) · [GitHub](https://github.com/Kairos0922)
+**Keep people in control.** Consequential actions deserve visible approval boundaries.
+
+**Show the working.** A good explanation starts with traceable sources and checked claims.
+
+**Make it inspectable.** Let people explore the system, not just read a promise about it.
+
+## Toolbox
+
+`TypeScript` &nbsp; `JavaScript` &nbsp; `Node.js` &nbsp; `Python` &nbsp; `Vue` &nbsp; `Angular` &nbsp; `Git`
+
+---
+
+<p align="center">
+  <b>Build. Learn. Share.</b><br>
+  <sub>A small lab for useful agents and understandable systems.</sub><br><br>
+  <a href="mailto:kenpete@163.com">kenpete@163.com</a> &nbsp; / &nbsp;
+  <a href="https://github.com/Kairos0922?tab=repositories">Browse the repositories</a>
+</p>
