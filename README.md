@@ -42,12 +42,12 @@ An evidence-minded pipeline for animated science explainers: research, scripting
 **As models make answers easier to retrieve, learning is knowing what to ask next.**
 
 <a href="https://kairos0922.github.io/Kairos0922/learning-loop-light.html">
-  <img src="assets/learning-loop.gif" alt="A six-stage interactive learning workbench. The question marker moves through noticing, framing, modeling, testing, revision and transfer." width="100%">
+  <img src="assets/learning-loop.gif" alt="A clearly drawn paper airplane glides, then pitches nose-down into a dive above a six-stage learning workbench." width="100%">
 </a>
 
 An interactive method for turning an unfamiliar situation into a useful question: notice, frame, model, test, revise, and transfer. A paper-plane puzzle makes the thinking concrete; the goal is not to memorize its answer, but to practise a process that carries into the next unknown.
 
-> 让天下没有难学的知识：不囤积结论，练习发现、定义、检验、修正，再把方法带到新的问题。
+> 我的目标是让复杂知识更容易学会。比起记住现成答案，我更重视培养提问、查证、检验和解决新问题的能力。
 
 **[Explore the learning loop →](https://kairos0922.github.io/Kairos0922/learning-loop-light.html)** &nbsp; · &nbsp; [Dark version](https://kairos0922.github.io/Kairos0922/learning-loop.html) &nbsp; · &nbsp; [How it was made](https://github.com/Kairos0922/Kairos0922/tree/main/docs/src/learning-loop)
 
