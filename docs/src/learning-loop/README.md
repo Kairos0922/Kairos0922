@@ -1,20 +1,30 @@
 # The Learning Loop
 
-An interactive explainer for Kairos's goal: make complex knowledge easier to learn. A clearly drawn paper airplane follows a visible path from a steady glide into a nose-down dive; the replay button lets the reader watch the full flight. The plane is a practice case for learning how to ask questions, look for evidence, test explanations and use a method in new situations—not an answer to memorize.
+A six-scene interactive explainer for a method of learning through inquiry. A paper airplane that glides and then dives supplies the opening observation; it is the case study, not the whole message. Choosing a phase changes both the scene and the motion, so the reader can see the method advance. The page also offers a pausable **Play full sequence** tour; manual phase selection stops the tour.
 
-The six selectable phases are **Notice → Frame → Model → Test → Revise → Transfer**. Arrow keys and stage buttons move a physical carriage across the workbench. The flight animation shows the observed glide and dive; it does not claim why the plane dives. The copy asks the reader to design a fair test and revise an explanation from evidence, without inventing experimental results. `preview-actions.json` replays the flight, captures eight animation frames and checks the final learning phase.
+## What each scene means
 
-## Build
+1. **Notice:** the plane glides and dives; its path records only what can be observed.
+2. **Frame:** a focus reticle narrows attention to one variable, the plane's nose weight, turning “Why did it fly badly?” into a question that can be tested.
+3. **Model:** a small weight joins the nose and a causal link appears. This is a provisional explanation, not a law or a claimed cause.
+4. **Test:** two matching planes leave identical release points; only one has a nose weight. The animation shows a controlled comparison, not a measured outcome.
+5. **Revise:** an evidence marker reaches two equally open branches. The page deliberately does not choose which is true; a real observation must decide whether to keep, change or replace the model.
+6. **Transfer:** a method card moves from the airplane case to a new paper-bridge loading problem, showing what can carry over when the subject changes.
 
-From the repository root, run:
+The six motions make the inquiry visible: observation → question → provisional model → fair test → evidence-led revision → transfer. The only asserted flight fact is the depicted glide followed by a nose-down dive; the cause and test result remain open.
+
+## Build and verify
+
+From the repository root:
 
 ```sh
 node docs/src/learning-loop/build.mjs
 node docs/src/learning-loop/build.mjs --light
+node /path/to/anatomy/scripts/drive.mjs docs/learning-loop-light.html --actions docs/src/learning-loop/preview-actions.json --width 1100 --height 1200 --scale 1
 ```
 
-The generated, dependency-free GitHub Pages files are `docs/learning-loop.html` (dark) and `docs/learning-loop-light.html` (light). The geometry, copy, flight path and replay interaction live in `build.mjs`. The browser test sequence is kept in `preview-actions.json` and was run with Anatomy’s upstream `scripts/drive.mjs`.
+The generated, dependency-free Pages files are `docs/learning-loop.html` (dark) and `docs/learning-loop-light.html` (light). The build script contains the geometry, story copy, scene-specific motion, the pausable tour and reduced-motion behavior. The browser test captures the flight and each phase, checks the transfer scene, confirms replay returns to observation, and verifies that the full tour advances and pauses.
 
 ## Craft credit
 
-The illustration is built with the [Anatomy Agent Skill](https://github.com/wheresryan22/anatomy) and its `kit/iso-kit.mjs`. Anatomy's kit is MIT-licensed; its original copyright and permission notice are preserved in [`vendor/LICENSE`](vendor/LICENSE). The learning-loop concept, six-stage teaching copy, geometry composition, interaction and page are original to this repository. The Anatomy Skill itself is a separate upstream project, not a Kairos-authored tool.
+The figure is built with the [Anatomy Skill](https://github.com/wheresryan22/anatomy) and its `kit/iso-kit.mjs`. The kit is MIT-licensed; its original notice is preserved in [`vendor/LICENSE`](vendor/LICENSE). The learning-loop concept, teaching copy, geometry composition, interactions and page are original to this repository. Anatomy is a separate upstream project.

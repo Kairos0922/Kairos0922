@@ -240,12 +240,80 @@ function paperPlane() {
   </g>`;
 }
 
+function planeGlyph(transform, weighted = false) {
+  return `<g class="mini-plane" transform="${transform}">
+    <path class="plane-wing plane-wing-a" d="M48 0 -34 -30 -13 0Z"/>
+    <path class="plane-wing plane-wing-b" d="M48 0 -13 0 -34 30Z"/>
+    <path class="plane-outline" d="M48 0 -34 -30 -13 0 -34 30Z"/>
+    <path class="plane-fold" d="M48 0 -13 0 -34 -30 M-13 0 -34 30"/>
+    ${weighted ? '<path class="nose-weight" d="M42 -6 49 -6 49 6 42 6Z"/>' : ""}
+  </g>`;
+}
+
+function learningScenes() {
+  return `
+  <g class="process-scene" data-scene="1" aria-hidden="true">
+    <path class="focus-bracket" d="M425 190h-10v-10 M444 190h10v-10 M425 227h-10v10 M444 227h10v10"/>
+    <circle class="focus-ring" cx="434" cy="208" r="12"/>
+    <path class="focus-leader" d="M447 207 Q468 196 488 197"/>
+    <circle class="focus-pulse" cx="434" cy="208" r="3"/>
+  </g>
+  <g class="process-scene" data-scene="2" aria-hidden="true">
+    <path class="model-link" d="M435 220 C470 178 506 151 542 151"/>
+    <circle class="model-node model-cause" cx="435" cy="220" r="5"/>
+    <circle class="model-node model-effect" cx="542" cy="151" r="7"/>
+    <path class="model-arrow" d="M514 151h18m0 0-6-5m6 5-6 5"/>
+    <path class="nose-weight model-weight" d="M427 211 435 211 435 227 427 227Z"/>
+    <circle class="model-question" cx="504" cy="167" r="5"/>
+    <path class="model-question-mark" d="M502 165q2-3 4-1 2 2-1 4l-1 1m0 2v.2"/>
+  </g>
+  <g class="process-scene test-scene" data-scene="3" aria-hidden="true">
+    <path class="test-rail" d="M90 40H556 M90 91H556"/>
+    <path class="test-rail-inner" d="M90 47H556 M90 98H556"/>
+    <path class="release-gate" d="M156 29v27 M156 80v27 M150 29h12 M150 80h12"/>
+    <path class="release-arrow" d="M105 33h26m-7-5 7 5-7 5 M105 84h26m-7-5 7 5-7 5"/>
+    <g class="test-plane test-plane-a">${planeGlyph("translate(171 39) scale(.42)")}</g>
+    <g class="test-plane test-plane-b">${planeGlyph("translate(171 90) scale(.42)", true)}</g>
+    <path class="same-condition" d="M117 58v20m0-10h28m-28 0h-7m35-10v20"/>
+    <circle class="test-signal test-signal-a" cx="522" cy="40" r="2.6"/>
+    <circle class="test-signal test-signal-b" cx="522" cy="91" r="2.6"/>
+  </g>
+  <g class="process-scene evidence-scene" data-scene="4" aria-hidden="true">
+    <rect class="evidence-card" x="179" y="21" width="294" height="94" rx="4"/>
+    <path class="evidence-spine" d="M211 66h76m0 0 61-25m-61 25 61 25"/>
+    <circle class="evidence-source" cx="211" cy="66" r="8"/>
+    <circle class="evidence-branch evidence-branch-a" cx="348" cy="41" r="7"/>
+    <circle class="evidence-branch evidence-branch-b" cx="348" cy="91" r="7"/>
+    <path class="evidence-return" d="M365 41h46v-12m-46 62h46v12"/>
+    <rect class="evidence-option evidence-option-a" x="427" y="31" width="29" height="20" rx="2"/>
+    <rect class="evidence-option evidence-option-b" x="427" y="81" width="29" height="20" rx="2"/>
+    <circle class="evidence-token evidence-token-a" cx="282" cy="66" r="3.2"/>
+    <circle class="evidence-token evidence-token-b" cx="282" cy="66" r="3.2"/>
+  </g>
+  <g class="process-scene transfer-scene" data-scene="5" aria-hidden="true">
+    <rect class="method-card" x="68" y="31" width="190" height="67" rx="3"/>
+    <path class="method-line" d="M89 64h143"/>
+    <circle class="method-step" cx="91" cy="64" r="4"/><circle class="method-step" cx="119" cy="64" r="4"/>
+    <circle class="method-step" cx="147" cy="64" r="4"/><circle class="method-step" cx="175" cy="64" r="4"/>
+    <circle class="method-step" cx="203" cy="64" r="4"/><circle class="method-step" cx="231" cy="64" r="4"/>
+    <path class="transfer-route" d="M258 64 C300 64 317 64 354 64"/>
+    <circle class="transfer-token" cx="258" cy="64" r="4"/>
+    <g class="bridge-case">
+      <path class="bridge-book" d="M397 82v-21h31v21z M487 82v-21h31v21z"/>
+      <path class="bridge-deck" d="M405 61 Q457 89 510 61"/>
+      <path class="bridge-fold" d="M414 66 423 72 432 75 441 78 450 79 459 80 468 79 477 78 486 75 495 72 503 66"/>
+      <path class="bridge-load" d="M451 41h16v19h-16z M454 35h10v6h-10z"/>
+      <circle class="bridge-mark" cx="459" cy="39" r="2"/>
+    </g>
+  </g>`;
+}
+
 const svg = k.figureSvg({
   width: WIDTH,
   height: HEIGHT,
-  label: "A paper airplane glides and then pitches nose-down along a visible flight path above a detailed six-station learning workbench. Press replay to watch the flight; select a station to explore the learning method.",
-  body: [flightGuide(), base(), guideRails(), stations(), `<g data-part="carriage" transform="${k.translateAlong(P, [X[0], 41.7, 0])}">${carriage()}</g>`, paperPlane()],
-});
+  label: "A six-step inquiry becomes a sequence of linked motions: observe a paper plane dive, focus the question, build a testable model, compare controlled trials, revise from evidence, and transfer the method to a paper bridge problem.",
+  body: [`<g class="workbench" data-part="workbench">${base()}${guideRails()}${stations()}<g data-part="carriage" transform="${k.translateAlong(P, [X[0], 41.7, 0])}">${carriage()}</g></g>`, flightGuide(), paperPlane(), learningScenes()],
+}).replace("<svg ", '<svg data-phase="0" ');
 
 const phaseData = JSON.stringify({ X, STAGES, STORY, FLIGHT });
 const live = `
@@ -255,8 +323,11 @@ const stage = document.querySelector(".iso-stage");
 const svg = stage.querySelector("svg");
 const carriage = svg.querySelector('[data-part="carriage"]');
 const plane = svg.querySelector('[data-part="paper-plane"]');
-const buttons = [...document.querySelectorAll("[data-phase]")];
+const scenes = [...svg.querySelectorAll('[data-scene]')];
+const stations = [...svg.querySelectorAll('[data-station]')];
+const buttons = [...document.querySelectorAll(".phase-button[data-phase]")];
 const replay = document.querySelector("[data-replay]");
+const tour = document.querySelector("[data-tour]");
 const title = document.querySelector("[data-story-title]");
 const body = document.querySelector("[data-story-body]");
 const move = document.querySelector("[data-story-move]");
@@ -265,7 +336,7 @@ const counter = document.querySelector("[data-counter]");
 const liveRegion = document.querySelector("[data-live-region]");
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
 let selected = 0, x = X[0], target = X[0], frame = 0, last = 0;
-let flightFrame = 0, flightStart = 0;
+let flightFrame = 0, flightStart = 0, tourTimer = 0, touring = false;
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 function curveAt(segment, t) {
   const [[x0,y0],[x1,y1],[x2,y2],[x3,y3]] = segment, u = 1 - t;
@@ -295,6 +366,9 @@ function replayFlight() {
 }
 function render(announce = false) {
   const s = STAGES[selected], text = STORY[selected];
+  svg.setAttribute('data-phase', String(selected));
+  scenes.forEach((scene) => scene.classList.toggle('is-current', Number(scene.dataset.scene) === selected));
+  stations.forEach((station) => station.classList.toggle('is-selected', Number(station.dataset.station) === selected));
   buttons.forEach((button, index) => {
     const active = index === selected;
     button.setAttribute('aria-pressed', String(active));
@@ -320,11 +394,42 @@ function tick(now) {
   if (x !== target) frame = requestAnimationFrame(tick); else { frame = 0; last = 0; }
 }
 function run() { if (!frame) { last = 0; frame = requestAnimationFrame(tick); } }
-function select(index, announce = true) { selected = clamp(index, 0, STAGES.length - 1); render(announce); }
-buttons.forEach((button, index) => button.addEventListener('click', () => select(index)));
-replay.addEventListener('click', replayFlight);
-document.querySelector('[data-prev]').addEventListener('click', () => select(selected - 1));
-document.querySelector('[data-next]').addEventListener('click', () => select(selected + 1));
+function select(index, announce = true) {
+  const next = clamp(index, 0, STAGES.length - 1);
+  if (next === selected) { if (next === 0) replayFlight(); return; }
+  selected = next;
+  cancelAnimationFrame(flightFrame); flightFrame = 0; flightStart = 0;
+  render(announce);
+  if (selected === 0) replayFlight();
+  else { positionPlane(1); replay.textContent = '↻ 重播纸飞机俯冲'; }
+}
+function stopTour() {
+  touring = false; clearTimeout(tourTimer); tourTimer = 0;
+  tour.textContent = '▶ 播放完整流程'; tour.setAttribute('aria-pressed', 'false');
+}
+function scheduleTour() {
+  clearTimeout(tourTimer);
+  tourTimer = setTimeout(() => {
+    if (!touring) return;
+    select((selected + 1) % STAGES.length);
+    scheduleTour();
+  }, selected === 0 ? 2700 : 1900);
+}
+function toggleTour() {
+  if (reduceMotion.matches) return;
+  if (touring) { stopTour(); return; }
+  touring = true; tour.textContent = 'Ⅱ 暂停演示'; tour.setAttribute('aria-pressed', 'true');
+  if (selected === 0) replayFlight(); else select(0);
+  scheduleTour();
+}
+function manualSelect(index) { if (touring) stopTour(); select(index); }
+const syncTourMotion = () => { if (reduceMotion.matches && touring) stopTour(); tour.disabled = reduceMotion.matches; };
+syncTourMotion(); reduceMotion.addEventListener?.('change', syncTourMotion);
+buttons.forEach((button, index) => button.addEventListener('click', () => manualSelect(index)));
+tour.addEventListener('click', toggleTour);
+replay.addEventListener('click', () => { if (touring) stopTour(); selected === 0 ? replayFlight() : select(0); });
+document.querySelector('[data-prev]').addEventListener('click', () => manualSelect(selected - 1));
+document.querySelector('[data-next]').addEventListener('click', () => manualSelect(selected + 1));
 stage.addEventListener('keydown', event => {
   let next = null;
   if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = selected + 1;
@@ -332,7 +437,7 @@ stage.addEventListener('keydown', event => {
   if (event.key === 'Home') next = 0;
   if (event.key === 'End') next = STAGES.length - 1;
   if (next === null) return;
-  event.preventDefault(); select(next);
+  event.preventDefault(); manualSelect(next);
 });
 reduceMotion.addEventListener?.('change', () => { if (reduceMotion.matches) { cancelAnimationFrame(frame); frame = 0; x = target; positionCarriage(); cancelAnimationFrame(flightFrame); flightFrame = 0; positionPlane(1); } });
 render(false);
@@ -346,21 +451,21 @@ const card = k.plateHtml({
   hint: "选择阶段 · 方向键切换",
   readout: "01 · 发现 / Notice",
   keys: [
-    { mark: "blue", label: "纸飞机沿轨迹滑翔后俯冲；点按钮重播" },
-    { mark: "raised", label: "六个站点对应六个学习步骤" },
+    { mark: "blue", label: "观察飞机俯冲，并沿六步查明问题" },
+    { mark: "raised", label: "切换阶段，查看每一步怎样改变调查" },
   ],
-  caption: "先看见真实问题：纸飞机离手后由滑翔转为机头下坠。点击下方按钮重播飞行，再选六个阶段，练习怎样查明原因；不预设实验答案。",
-  body: `<div class="iso-stage" tabindex="0" role="group" aria-label="纸飞机飞行与俯冲示意图，以及六站学习工作台。使用方向键在学习阶段间移动标记。">${svg}</div>`,
+  caption: "从纸飞机俯冲开始，六个阶段会依次聚焦问题、搭建假设、比较条件、依据证据修正，再把方法带到纸桥的新问题。实验结果留给真正的观察，不在图中预设。",
+  body: `<div class="iso-stage" tabindex="0" role="group" aria-label="六个相连的学习场景：观察纸飞机俯冲，定义问题，建立可检验模型，做公平比较，依据证据修正，并把方法迁移到纸桥问题。使用方向键切换阶段。">${svg}</div>`,
 });
 const page = `
 <header class="page-intro">
   <p class="eyebrow">KAIROS · LEARNING BY EXPLORING</p>
   <h1>The Learning Loop</h1>
   <p class="lead">当答案随手可得，真正值得练习的是：<strong>怎样把未知变成可解决的问题。</strong></p>
-  <p class="lede-cn">AI 让答案更容易获得；更重要的是学会提出好问题、寻找证据、检验想法，并把有效的方法用到新情境。</p>
+  <p class="lede-cn">答案越来越容易获得；提出问题、验证想法、把方法用到新情境，才是更值得练习的能力。</p>
 </header>
 ${card}
-<div class="flight-control"><button type="button" data-replay aria-label="重播纸飞机从滑翔转为俯冲的动画">↻ 重播纸飞机俯冲</button><span>先看清现象，再追问原因。</span></div>
+<div class="flight-control"><div class="flight-actions"><button type="button" data-tour aria-pressed="false">▶ 播放完整流程</button><button type="button" data-replay aria-label="回到观察阶段并重播纸飞机飞行">↻ 重播第一步</button></div><span>六幕依次展示从观察到迁移的思考过程。</span></div>
 <section class="lesson" aria-live="off">
   <p class="lesson-kicker">一题练习 · 纸飞机刚离手就俯冲</p>
   <h2 data-story-title>${STORY[0].title}</h2>
@@ -383,17 +488,24 @@ const customCss = `
 .lead{font-size:19px;line-height:1.5;margin:0 0 8px;color:var(--anatomy-text)}.lead strong{color:var(--anatomy-strong);font-weight:600}.lede-cn{margin:0;color:var(--anatomy-muted);line-height:1.8}
 .iso-figure{margin:0}.iso-plate{padding:50px 20px 50px}.iso-stage{outline:none;border-radius:4px;touch-action:pan-y}.iso-stage:focus-visible{box-shadow:0 0 0 2px var(--anatomy-lit)}.iso-stage svg{width:100%;height:auto;display:block}.iso-caption{line-height:1.75}
 .flight-path{fill:none;stroke:var(--anatomy-blue);stroke-width:1.7;stroke-dasharray:3 5;stroke-linecap:round;opacity:.8}.flight-start{fill:var(--anatomy-blue);stroke:var(--anatomy-paper);stroke-width:1.5}.flight-impact{fill:var(--anatomy-red);stroke:var(--anatomy-paper);stroke-width:1.5}.flight-note{fill:var(--anatomy-muted);font:9px var(--anatomy-mono);letter-spacing:.03em}.flight-note-end{fill:var(--anatomy-red)}.paper-plane{filter:drop-shadow(0 3px 3px rgba(0,0,0,.2))}.plane-shadow{fill:var(--anatomy-lo);opacity:.12}.plane-wing{stroke:none}.plane-wing-a{fill:var(--anatomy-paper)}.plane-wing-b{fill:var(--anatomy-face)}.plane-outline{fill:none;stroke:var(--anatomy-strong);stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.plane-fold{fill:none;stroke:var(--anatomy-blue);stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}.plane-nose{fill:var(--anatomy-red)}.plane-rivet{fill:var(--anatomy-blue)}
-.flight-control{display:flex;align-items:center;gap:12px;margin:10px 0 0 8px;color:var(--anatomy-muted);font-size:12px}.flight-control button{border:1px solid var(--anatomy-mid);border-radius:3px;padding:8px 12px;background:var(--anatomy-card);color:var(--anatomy-strong);font:inherit;cursor:pointer}.flight-control button:hover{border-color:var(--anatomy-blue)}.flight-control button:focus-visible{outline:2px solid var(--anatomy-blue);outline-offset:2px}
+.workbench{transition:opacity .45s ease}.process-scene{display:none;pointer-events:none}.process-scene.is-current{display:inline}.process-scene path,.process-scene circle,.process-scene rect{vector-effect:non-scaling-stroke}
+svg[data-phase="3"] .workbench,svg[data-phase="4"] .workbench,svg[data-phase="5"] .workbench{opacity:.05}svg[data-phase="3"] .flight-guide,svg[data-phase="4"] .flight-guide,svg[data-phase="5"] .flight-guide,svg[data-phase="3"] .paper-plane,svg[data-phase="4"] .paper-plane,svg[data-phase="5"] .paper-plane{opacity:0;transition:opacity .3s}
+.process-scene[data-scene="3"],.process-scene[data-scene="4"],.process-scene[data-scene="5"]{translate:0 96px;scale:1.15;transform-box:view-box;transform-origin:center}
+.focus-bracket,.focus-leader,.model-link,.model-arrow,.test-rail,.test-rail-inner,.release-gate,.release-arrow,.same-condition,.evidence-spine,.evidence-return,.method-line,.transfer-route,.bridge-deck,.bridge-fold,.bridge-book,.bridge-load{fill:none;stroke:var(--anatomy-strong);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}.focus-bracket,.focus-ring,.model-link,.model-arrow,.test-rail-inner,.release-arrow,.transfer-route{stroke:var(--anatomy-blue)}.focus-ring,.model-link,.transfer-route{stroke-dasharray:3 3}.focus-pulse,.test-signal,.evidence-source,.evidence-branch,.method-step,.transfer-token,.bridge-mark{fill:var(--anatomy-lit);stroke:var(--anatomy-paper);stroke-width:1}.focus-bracket{stroke-width:2}.focus-ring{fill:none;stroke-width:1.4}.focus-pulse{animation:focus-ping 1.6s ease-out infinite}.nose-weight{fill:var(--anatomy-red);stroke:var(--anatomy-strong);stroke-width:1.1;stroke-linejoin:round}.model-node{fill:var(--anatomy-blue);stroke:var(--anatomy-paper);stroke-width:1}.model-effect{fill:var(--anatomy-lit)}.model-weight{transform-box:fill-box;transform-origin:center;animation:weight-set 1.1s cubic-bezier(.2,.7,.2,1) both}.model-link{stroke-dasharray:80;stroke-dashoffset:80;animation:draw-link .8s .2s ease-out forwards}.model-question{fill:var(--anatomy-card);stroke:var(--anatomy-red);stroke-width:1.2}.model-question-mark{fill:none;stroke:var(--anatomy-red);stroke-width:1.2;stroke-linecap:round}
+.test-rail{stroke:var(--anatomy-mid);stroke-width:2}.release-gate{stroke:var(--anatomy-muted)}.same-condition{stroke:var(--anatomy-lit);stroke-width:1.5}.mini-plane .plane-outline{stroke-width:2.4}.mini-plane .plane-fold{stroke-width:1.8}.test-plane{transform-box:fill-box;animation:controlled-launch 1.7s .2s ease-in-out infinite alternate}.test-plane-b{animation-delay:.35s}.test-signal{animation:paired-pulse 1.7s ease-in-out infinite alternate}.test-signal-b{animation-delay:.35s}
+.evidence-card,.evidence-option,.method-card{fill:var(--anatomy-card);stroke:var(--anatomy-mid);stroke-width:1}.evidence-spine,.evidence-return{stroke:var(--anatomy-muted)}.evidence-branch{fill:var(--anatomy-card);stroke:var(--anatomy-blue);stroke-width:1.5}.evidence-option{stroke:var(--anatomy-mid);stroke-dasharray:2 2}.evidence-token{fill:var(--anatomy-lit);stroke:none}.evidence-token-a{animation:branch-a 1.8s ease-in-out infinite alternate}.evidence-token-b{animation:branch-b 1.8s ease-in-out infinite alternate}.method-card{stroke:var(--anatomy-mid)}.method-line{stroke:var(--anatomy-mid)}.method-step{stroke:var(--anatomy-paper);stroke-width:1.3}.method-step:nth-of-type(odd){fill:var(--anatomy-blue)}.transfer-route{stroke-dasharray:4 4}.transfer-token{animation:transfer-token 1.7s .2s ease-in-out infinite alternate}.bridge-book{fill:var(--anatomy-face);stroke:var(--anatomy-muted)}.bridge-deck{stroke:var(--anatomy-strong);stroke-width:3;animation:bridge-bend 1.7s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 0}.bridge-fold{stroke:var(--anatomy-blue);stroke-width:1.2}.bridge-load{fill:var(--anatomy-paper);stroke:var(--anatomy-strong)}
+@keyframes focus-ping{0%{opacity:0;translate:0 0;scale:.5}40%{opacity:.95}100%{opacity:0;translate:0 0;scale:2.2}}@keyframes draw-link{to{stroke-dashoffset:0}}@keyframes weight-set{0%{translate:-22px -13px;opacity:0}75%{translate:2px 1px;opacity:1}100%{translate:0 0;opacity:1}}@keyframes controlled-launch{0%{translate:0 0}45%{translate:30px 0}100%{translate:34px 0}}@keyframes paired-pulse{0%,20%{opacity:.3}55%,100%{opacity:1}}@keyframes branch-a{0%,18%{translate:0 0}80%,100%{translate:66px -25px}}@keyframes branch-b{0%,18%{translate:0 0}80%,100%{translate:66px 25px}}@keyframes transfer-token{0%{translate:0 0}80%,100%{translate:96px 0}}@keyframes bridge-bend{0%{scale:1 1}100%{scale:1 1.1}}
+.flight-control{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0 0 8px;color:var(--anatomy-muted);font-size:12px}.flight-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.flight-control button{border:1px solid var(--anatomy-mid);border-radius:3px;padding:8px 12px;background:var(--anatomy-card);color:var(--anatomy-strong);font:inherit;cursor:pointer}.flight-control button:hover:not(:disabled){border-color:var(--anatomy-blue)}.flight-control button:focus-visible{outline:2px solid var(--anatomy-blue);outline-offset:2px}.flight-control button:disabled{opacity:.45;cursor:not-allowed}
 .lesson{max-width:710px;margin:32px auto 0;padding:24px 0 0;border-top:1px solid var(--anatomy-mid)}.lesson-kicker{margin:0 0 9px}.lesson h2{font-size:22px;line-height:1.3;margin:0 0 10px;color:var(--anatomy-strong);letter-spacing:-.02em}.lesson>p:not(.lesson-kicker):not(.next-move):not(.takeaway):not(.attribution){line-height:1.8;font-size:15px;margin:0 0 14px}
 .next-move{display:grid;grid-template-columns:145px 1fr;gap:14px;margin:18px 0 24px;padding:14px 16px;border-left:2px solid var(--anatomy-lit);background:var(--anatomy-card);line-height:1.65}.next-move span:first-child{font:10px/1.5 var(--anatomy-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--anatomy-muted)}
 .phase-nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}.phase-button,.lesson-controls button{font:inherit;color:var(--anatomy-text);background:var(--anatomy-card);border:1px solid var(--anatomy-mid);border-radius:3px;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.phase-button{min-height:62px;padding:9px 7px;text-align:left;display:flex;flex-direction:column;justify-content:space-between}.phase-button:hover:not(.is-active),.lesson-controls button:hover:not(:disabled){border-color:var(--anatomy-text);transform:translateY(-1px)}.phase-button.is-active{border-color:var(--anatomy-lit);color:var(--anatomy-strong);background:var(--anatomy-face)}.phase-number{font:10px/1 var(--anatomy-mono);color:var(--anatomy-muted)}.phase-name{font-size:13px;line-height:1.2}.phase-name small{display:block;margin-top:3px;font:10px/1.2 var(--anatomy-mono);color:var(--anatomy-muted)}
 .lesson-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 24px}.lesson-controls button{padding:8px 12px}.lesson-controls button:disabled{opacity:.4;cursor:not-allowed}.lesson-controls span{font:11px var(--anatomy-mono);color:var(--anatomy-muted);font-variant-numeric:tabular-nums}.takeaway{font-size:17px;line-height:1.7;color:var(--anatomy-strong);margin:0 0 18px}.attribution{font-size:11px;line-height:1.7;color:var(--anatomy-muted);margin:0}.attribution a{color:inherit;text-underline-offset:3px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:620px){.iso-page{width:calc(100% - 24px);margin:32px auto 52px}.page-intro{margin-bottom:20px}.page-intro h1{font-size:38px}.lead{font-size:17px}.iso-plate{padding:48px 10px 46px}.iso-plate-corners{inset:16px 12px}.flight-control{margin-left:0}.phase-nav{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.phase-button{min-height:56px;padding:8px}.next-move{grid-template-columns:1fr;gap:4px}.lesson{margin-top:24px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 `;
 const kitSource = readFileSync(join(HERE, "vendor", "iso-kit.mjs"), "utf8").replace(/^export /gm, "");
 const html = k.pageHtml({ title: "The Learning Loop — Kairos", theme, body: page, script: kitSource + live, width: 760 });
-const output = html.replace("</style>", `${customCss}</style>`).replace('<html lang="en">', '<html lang="zh-CN">');
+const output = html.replace("</style>", `${customCss}</style>`).replace('<html lang="en">', '<html lang="zh-CN">').replace(/^[ \t]+$/gm, "");
 const file = join(ROOT, theme === "light" ? "learning-loop-light.html" : "learning-loop.html");
 writeFileSync(file, output);
 console.log(`wrote ${file} · ${solidCount} solid calls · ${theme} theme`);
