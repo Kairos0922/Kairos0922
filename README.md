@@ -15,7 +15,7 @@
 
 I’m **Kairos**, an independent builder exploring AI agents and intelligent systems. I build tools that make agents useful beyond the chat window, and visual experiments that make complex ideas easier to understand.
 
-> 在合适的时刻，把复杂系统做成可理解、可参与的工具。
+> 让天下没有难学的知识。
 
 ## Selected work
 
@@ -39,15 +39,11 @@ An evidence-minded pipeline for animated science explainers: research, scripting
 
 ### 03 / The learning loop
 
-**As models make answers easier to retrieve, learning is knowing what to ask next.**
-
 <a href="https://kairos0922.github.io/Kairos0922/learning-loop-light.html">
-  <img src="assets/learning-loop.gif" alt="A clearly drawn paper airplane glides, then pitches nose-down into a dive above a six-stage learning workbench." width="100%">
+  <img src="assets/learning-loop.gif" alt="Six linked learning scenes: observe a paper-plane dive, frame a question, form a model, run a fair test, revise from evidence, and transfer the method to a new problem." width="100%">
 </a>
 
-An interactive method for turning an unfamiliar situation into a useful question: notice, frame, model, test, revise, and transfer. A paper-plane puzzle makes the thinking concrete; the goal is not to memorize its answer, but to practise a process that carries into the next unknown.
-
-> 我的目标是让复杂知识更容易学会。比起记住现成答案，我更重视培养提问、查证、检验和解决新问题的能力。
+A six-scene explainer of the learning loop: observe a phenomenon, frame a testable question, form a provisional model, design a fair comparison, revise it from evidence, and carry the method into a new problem. The paper airplane makes the process concrete; the example's cause and test result are left open.
 
 **[Explore the learning loop →](https://kairos0922.github.io/Kairos0922/learning-loop-light.html)** &nbsp; · &nbsp; [Dark version](https://kairos0922.github.io/Kairos0922/learning-loop.html) &nbsp; · &nbsp; [How it was made](https://github.com/Kairos0922/Kairos0922/tree/main/docs/src/learning-loop)
 
