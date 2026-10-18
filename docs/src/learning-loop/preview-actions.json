@@ -1,0 +1,20 @@
+[
+  ["wait", 100],
+  ["shot", "docs/previews/learning-loop-01.png", ".iso-plate", 1],
+  ["click", ".phase-button[data-phase=\"1\"]"],
+  ["wait", 420],
+  ["shot", "docs/previews/learning-loop-02.png", ".iso-plate", 1],
+  ["click", ".phase-button[data-phase=\"2\"]"],
+  ["wait", 420],
+  ["shot", "docs/previews/learning-loop-03.png", ".iso-plate", 1],
+  ["click", ".phase-button[data-phase=\"3\"]"],
+  ["wait", 420],
+  ["shot", "docs/previews/learning-loop-04.png", ".iso-plate", 1],
+  ["click", ".phase-button[data-phase=\"4\"]"],
+  ["wait", 420],
+  ["shot", "docs/previews/learning-loop-05.png", ".iso-plate", 1],
+  ["click", ".phase-button[data-phase=\"5\"]"],
+  ["wait", 420],
+  ["eval", "document.querySelector('[data-readout]').textContent + ' | ' + document.querySelector('[data-story-title]').textContent"],
+  ["shot", "docs/previews/learning-loop-06.png", ".iso-plate", 1]
+]
